@@ -4,6 +4,15 @@
 
 명령어를 빠르게 찾아보는 참고 자료이자, 각 기법의 사용 조건과 동작 원리를 복습하기 위한 학습 노트입니다.
 
+## 분야별 바로가기
+
+- [상황별 목차](Playbooks/README.md)
+- [Web](Web/README.md)
+- [Linux](Linux/README.md)
+- [Windows](Windows/README.md)
+- [Active Directory](Active_Directory/README.md)
+- [Common](Common/README.md)
+
 ## 구성
 
 | 분야 | 주요 내용 |
@@ -14,51 +23,70 @@
 ```text
 Cheat_Sheet/
 ├── README.md
-├── 01_공통치트시트/
-│   ├── 01_열거/
-│   ├── 02_서비스별공격/
-│   ├── 03_쉘획득/
-│   ├── 04_파일전송/
-│   ├── 05_권한읽는법/
-│   ├── 06_권한상승/
-│   ├── 07_password_cracking/
-│   ├── 08_파일포맷분석/
-│   ├── 09_피버팅_터널링.md
-│   ├── 10_도구_트러블슈팅.md
-│   └── 11_Metasploit.md
-└── 02_AD_전체노트/
-    ├── 01_외부침투/
-    ├── 02_내부침투/
-    └── 03_DC장악/
+├── Playbooks/
+│   ├── README.md
+│   ├── CTF.md
+│   ├── Bug_Bounty.md
+│   └── Pentest.md
+├── Web/
+│   ├── README.md
+│   ├── HTTP_HTTPS/
+│   └── 열거/
+├── Linux/
+│   ├── README.md
+│   ├── 열거/
+│   └── 권한상승/
+├── Windows/
+│   ├── README.md
+│   ├── 열거/
+│   └── 권한상승/
+├── Active_Directory/
+│   ├── README.md
+│   ├── 01_외부침투/
+│   ├── 02_내부침투/
+│   └── 03_DC장악/
+└── Common/
+    ├── README.md
+    ├── 01_열거/
+    ├── 02_서비스별공격/
+    ├── 03_쉘획득/
+    ├── 04_파일전송/
+    ├── 05_권한읽는법/
+    ├── 06_권한상승/
+    ├── 07_password_cracking/
+    ├── 08_파일포맷분석/
+    ├── 09_피버팅_터널링.md
+    ├── 10_도구_트러블슈팅.md
+    └── 11_Metasploit.md
 ```
 
 ## 공통 치트시트
 
-[공통 치트시트 전체 목차](01_공통치트시트/README.md)
+[공통 치트시트 전체 목차](Common/README.md)
 
 | 주제 | 정리 내용 |
 |---|---|
-| [01. 열거](01_공통치트시트/01_열거/README.md) | Nmap, enum4linux, 디렉터리 탐색, DNS 열거, JavaScript 분석 등 |
-| [02. 서비스별 공격](01_공통치트시트/02_서비스별공격/README.md) | FTP, SSH, SMB, HTTP/HTTPS 등 서비스별 점검·공격 기법 |
-| [03. 쉘 획득](01_공통치트시트/03_쉘획득/README.md) | 리버스 쉘과 쉘 업그레이드 |
-| [04. 파일 전송](01_공통치트시트/04_파일전송/README.md) | Linux·Windows 환경 간 파일 전송 방법 |
-| [05. 권한 읽는 법](01_공통치트시트/05_권한읽는법/README.md) | 권한 정보를 읽고 해석하는 방법 |
-| [06. 권한 상승](01_공통치트시트/06_권한상승/README.md) | Linux·Windows 권한 상승 기법 |
-| [07. 패스워드 크래킹](01_공통치트시트/07_password_cracking/README.md) | 해시 식별, Hashcat, John the Ripper, 해시 유형별 크래킹 |
-| [08. 파일 포맷 분석](01_공통치트시트/08_파일포맷분석/README.md) | MDB, PST, Office, PDF, EML, 압축파일 등의 분석 |
-| [09. 피버팅·터널링](01_공통치트시트/09_피버팅_터널링.md) | 내부 네트워크 접근을 위한 피버팅과 터널링 |
-| [10. 도구 트러블슈팅](01_공통치트시트/10_도구_트러블슈팅.md) | 도구 사용 중 발생하는 오류와 해결 방법 |
-| [11. Metasploit](01_공통치트시트/11_Metasploit.md) | Metasploit 사용법과 관련 명령어 |
+| [01. 열거](Common/01_%EC%97%B4%EA%B1%B0/README.md) | Nmap, enum4linux, 디렉터리 탐색, DNS 열거, JavaScript 분석 등 |
+| [02. 서비스별 공격](Common/02_%EC%84%9C%EB%B9%84%EC%8A%A4%EB%B3%84%EA%B3%B5%EA%B2%A9/README.md) | FTP, SSH, SMB, HTTP/HTTPS 등 서비스별 점검·공격 기법 |
+| [03. 쉘 획득](Common/03_%EC%89%98%ED%9A%8D%EB%93%9D/README.md) | 리버스 쉘과 쉘 업그레이드 |
+| [04. 파일 전송](Common/04_%ED%8C%8C%EC%9D%BC%EC%A0%84%EC%86%A1/README.md) | Linux·Windows 환경 간 파일 전송 방법 |
+| [05. 권한 읽는 법](Common/05_%EA%B6%8C%ED%95%9C%EC%9D%BD%EB%8A%94%EB%B2%95/README.md) | 권한 정보를 읽고 해석하는 방법 |
+| [06. 권한 상승](Common/06_%EA%B6%8C%ED%95%9C%EC%83%81%EC%8A%B9/README.md) | Linux·Windows 권한 상승 기법 |
+| [07. 패스워드 크래킹](Common/07_password_cracking/README.md) | 해시 식별, Hashcat, John the Ripper, 해시 유형별 크래킹 |
+| [08. 파일 포맷 분석](Common/08_%ED%8C%8C%EC%9D%BC%ED%8F%AC%EB%A7%B7%EB%B6%84%EC%84%9D/README.md) | MDB, PST, Office, PDF, EML, 압축파일 등의 분석 |
+| [09. 피버팅·터널링](Common/09_%ED%94%BC%EB%B2%84%ED%8C%85_%ED%84%B0%EB%84%90%EB%A7%81.md) | 내부 네트워크 접근을 위한 피버팅과 터널링 |
+| [10. 도구 트러블슈팅](Common/10_%EB%8F%84%EA%B5%AC_%ED%8A%B8%EB%9F%AC%EB%B8%94%EC%8A%88%ED%8C%85.md) | 도구 사용 중 발생하는 오류와 해결 방법 |
+| [11. Metasploit](Common/11_Metasploit.md) | Metasploit 사용법과 관련 명령어 |
 
 ## Active Directory
 
-[AD 전체 목차](02_AD_전체노트/README.md)
+[AD 전체 목차](Active_Directory/README.md)
 
 | 단계 | 정리 내용 |
 |---|---|
-| [01. 외부 침투](02_AD_전체노트/01_외부침투/README.md) | 사용자 열거, AS-REP Roasting, 패스워드 스프레이, Kerberoasting, SMB Relay |
-| [02. 내부 침투](02_AD_전체노트/02_내부침투/README.md) | BloodHound, Pass-the-Hash, Pass-the-Ticket, 권한 관계별 공격, 위임 설정 악용 등 |
-| [03. DC 장악](02_AD_전체노트/03_DC장악/README.md) | Golden Ticket, Silver Ticket, 지속성 관련 기법 |
+| [01. 외부 침투](Active_Directory/01_%EC%99%B8%EB%B6%80%EC%B9%A8%ED%88%AC/README.md) | 사용자 열거, AS-REP Roasting, 패스워드 스프레이, Kerberoasting, SMB Relay |
+| [02. 내부 침투](Active_Directory/02_%EB%82%B4%EB%B6%80%EC%B9%A8%ED%88%AC/README.md) | BloodHound, Pass-the-Hash, Pass-the-Ticket, 권한 관계별 공격, 위임 설정 악용 등 |
+| [03. DC 장악](Active_Directory/03_DC%EC%9E%A5%EC%95%85/README.md) | Golden Ticket, Silver Ticket, 지속성 관련 기법 |
 
 단계 구분은 노트를 탐색하기 위한 분류입니다. 실제 사용 가능한 기법과 진행 순서는 확보한 계정, 권한, 서비스 설정에 따라 달라집니다.
 
