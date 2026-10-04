@@ -5,6 +5,11 @@
 ---
 
 ## 공격자 측 서버 준비
+```bash
+# 리스너 IP 확인하는 법
+ip a show tun0
+
+```
 
 ```bash
 # HTTP
