@@ -45,9 +45,9 @@ nxc smb <IP> -u user -p 'password' --shares
 
 # enum4linux
 enum4linux -a <IP>
-enum4linux-ng -A <IP>
+enum4linux-ng -A <IP> # enum4linux의 업그레이드 버전 
 
-# rpcclient (null session)
+# rpcclient (null session - 사용자와 비밀번호를 둘 다 빈 문자열로 넣어 실행)
 rpcclient -U "" -N <IP>
 rpcclient> enumdomusers
 rpcclient> enumdomgroups
