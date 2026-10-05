@@ -23,6 +23,9 @@ nmap -p 21 --script=ftp-anon <IP>
 
 # 버전 탐지
 nmap -sV -p 21 <IP>
+
+# 배너 탐지
+nc <IP> 21
 ```
 
 ---
