@@ -14,7 +14,7 @@ cat /etc/hosts
 
 # 2단계: 호스트 스캔 (-sn = ping sweep)
 
-nmap -sn --min-rate 2000 10.10.10.0/24 \
+nmap -sn --min-rate 2000 <target_cidr> \
   | awk '/Nmap scan report/{print $NF}' \
   | tr -d '()'
   
