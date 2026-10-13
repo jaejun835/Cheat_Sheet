@@ -37,9 +37,8 @@ snmpd
 ## 3. snmpwalk — 정보 수집
 
 ```bash
-# 전체 MIB 트리 수집
-snmpwalk -v 2c -c public <IP>
-snmpwalk -v 2c -c public <IP> > snmp_full.txt
+# 전체 MIB 트리 수집 (OID 생략하면 MIB-2만 나오니 반드시 1을 줄 것)
+snmpwalk -v 2c -c public <IP> 1 > snmp_full.txt
 
 # 시스템 정보
 snmpwalk -v 2c -c public <IP> 1.3.6.1.2.1.1    # system
