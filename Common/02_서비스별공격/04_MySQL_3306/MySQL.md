@@ -39,6 +39,13 @@ mysql -h <IP> -P 3306 -u root -p
 
 # 연결 테스트
 mysql -h <IP> -u root --connect-timeout=5 -e "SELECT 1;" 2>/dev/null
+
+### 트러블 슈팅
+
+# ERROR 2026 (HY000): TLS/SSL error: self-signed certificate in certificate chain
+# TLS 에러로 TLS 검증을 끄기만 하면 해결된다
+# 옵션으로 --ssl-mode=DISABLED 을 붙이고 만약 안될 경우 --skip-ssl=DISABLED를 붙이면 된다
+
 ```
 
 ---
