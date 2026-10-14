@@ -23,3 +23,5 @@
 [11_POP3_IMAP](11_POP3_IMAP/README.md)
 
 [12_Oracle_TNS](./12_Oracle_TNS/README.md)
+
+[13_IPMI](./13_IPMI/README.md)
