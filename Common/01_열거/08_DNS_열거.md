@@ -173,6 +173,22 @@ dnsenum --dnsserver <IP> --enum -p 0 -s 0 -o subdomains.txt -f /usr/share/seclis
 # nmap 종합 DNS 스크립트
 nmap -n -sU -p53 --script "(default and *dns*) or fcrdns or dns-srv-enum or dns-random-txid or dns-random-srcport" <IP>
 ```
+## 트러블슈팅 - dnsrecon FancyURLopener 에러
+
+최신 파이썬(3.12+)에서 dnsrecon 실행 시 import 단계에서 죽는 경우.
+
+```
+AttributeError: module 'urllib.request' has no attribute 'FancyURLopener'
+```
+
+원인 - FancyURLopener 는 파이썬 3.12 에서 삭제됐는데, dnsrecon 의 Bing/Yandex 검색 모듈이 아직 이걸 참조한다. 서브도메인 브루트포스(-t brt)에는 안 쓰이는 기능이라, 해당 줄만 무력화하면 된다.
+
+```bash
+# lib 폴더 전체에서 문제 줄을 object 로 교체 (bing, yandex 등 한 번에)
+sudo sed -i 's/^url_opener = urllib.request.FancyURLopener/url_opener = object/' /usr/share/dnsrecon/dnsrecon/lib/*.py
+```
+
+object 로 바꾸는 이유 - 바로 다음 줄에서 이 값을 상속(class AppURLopener(url_opener))한다. None 은 상속이 안 돼 또 죽으니, 상속 가능한 object 를 넣는다.
 
 ---
 
