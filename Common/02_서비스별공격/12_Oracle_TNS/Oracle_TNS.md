@@ -11,6 +11,9 @@ Oracle 데이터베이스의 네트워크 접속 계층. TNS Listener(기본 152
 TNS 는 인증 없이도 버전과 상태를 어느 정도 뱉는다. SID 를 모르면 접속 자체가 안 되므로, 버전 확인과 SID 브루트포스를 먼저 한다.
 
 ```bash
+# odat 다운로드
+sudo apt install odat -y
+
 # nmap - 버전과 SID
 nmap -p 1521 -sV --open <IP>
 nmap -p 1521 --script=oracle-tns-version <IP>
