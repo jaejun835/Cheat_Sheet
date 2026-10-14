@@ -28,22 +28,22 @@ nxc mssql <IP> -u 'sa' -p ''
 
 ```bash
 # impacket-mssqlclient (가장 많이 사용)
-impacket-mssqlclient sa@<IP>
-impacket-mssqlclient sa:'password'@<IP>
-impacket-mssqlclient -windows-auth DOMAIN/user:'password'@<IP>
+impacket-mssqlclient <user>@<IP>
+impacket-mssqlclient <user>:'<password>'@<IP>
+impacket-mssqlclient -windows-auth <DOMAIN>/<user>:'<password>'@<IP>
 
 # -port 옵션
-impacket-mssqlclient sa:'password'@<IP> -port 1433
+impacket-mssqlclient <user>:'<password>'@<IP> -port 1433
 
 # sqsh (Linux)
-sqsh -S <IP> -U sa -P password
+sqsh -S <IP> -U <user> -P <password>
 
 # sqlcmd (Windows)
-sqlcmd -S <IP> -U sa -P password
-sqlcmd -S <IP> -U sa -P password -Q "SELECT @@version"
+sqlcmd -S <IP> -U <user> -P <password>
+sqlcmd -S <IP> -U <user> -P <password> -Q "SELECT @@version"
 
 # netexec
-nxc mssql <IP> -u sa -p 'password' --local-auth
+nxc mssql <IP> -u <user> -p '<password>' --local-auth
 ```
 
 ### 브루트포스
