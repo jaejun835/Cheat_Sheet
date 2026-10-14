@@ -17,3 +17,5 @@
 [08_DNS_열거](08_DNS_%EC%97%B4%EA%B1%B0.md)
 
 [09_EyeWitness_웹스크린샷](../../Web/%EC%97%B4%EA%B1%B0/09_EyeWitness_%EC%9B%B9%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7.md)
+
+[10_whois](./10_whois.md)
