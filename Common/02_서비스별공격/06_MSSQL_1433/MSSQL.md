@@ -30,7 +30,7 @@ nxc mssql <IP> -u 'sa' -p ''
 # impacket-mssqlclient (가장 많이 사용)
 impacket-mssqlclient <user>@<IP>
 impacket-mssqlclient <user>:'<password>'@<IP>
-impacket-mssqlclient -windows-auth <DOMAIN>/<user>:'<password>'@<IP>
+impacket-mssqlclient -windows-auth <DOMAIN>/<user>:'<password>'@<IP> 
 
 # -port 옵션
 impacket-mssqlclient <user>:'<password>'@<IP> -port 1433
@@ -44,6 +44,21 @@ sqlcmd -S <IP> -U <user> -P <password> -Q "SELECT @@version"
 
 # netexec (자격 증명 유효한지 확인)
 nxc mssql <IP> -u <user> -p '<password>' --local-auth
+
+### 트러블 슈팅 (로그인이 안 될 경우)
+# impacket-mssqlclient
+# 인증 두 축: (1) SQL 계정 vs Windows 계정  (2) 로컬 vs 도메인
+# <user>@<IP> 는 SQL 인증. sa 처럼 SQL 서버 안에 만든 계정일 때
+impacket-mssqlclient <user>:'<password>'@<IP>
+
+# Windows 계정이면 -windows-auth. 로컬 계정도 포함(독립 서버는 컴퓨터명이 로컬 범위)
+# <domain> 자리엔 도메인명, 로컬 계정이면 컴퓨터명(예: ILF-SQL-01)을 넣는다
+impacket-mssqlclient -windows-auth <domain_or_hostname>/<user>:'<password>'@<IP>
+
+# 어느 쪽인지 모르면 netexec 로 먼저 확인한다
+#   nxc mssql <IP> -u <user> -p '<password>'              (Windows/도메인 인증)
+#   nxc mssql <IP> -u <user> -p '<password>' --local-auth (로컬 SAM 인증)
+# Pwn3d 뜨는 쪽 조합을 impacket 플래그로 그대로 옮긴다
 ```
 
 ### 브루트포스
