@@ -42,7 +42,7 @@ sqsh -S <IP> -U <user> -P <password>
 sqlcmd -S <IP> -U <user> -P <password>
 sqlcmd -S <IP> -U <user> -P <password> -Q "SELECT @@version"
 
-# netexec
+# netexec (자격 증명 유효한지 확인)
 nxc mssql <IP> -u <user> -p '<password>' --local-auth
 ```
 
