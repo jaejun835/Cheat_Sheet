@@ -113,24 +113,36 @@ ftp> mget *.zip
 
 FTP 데이터 채널을 여는 방식이 두 가지다.
 
-**Active 모드 (기본)** — 클라이언트가 PORT 명령으로 자신의 IP와 포트를 서버에 알려주고, 서버가 포트 20에서 클라이언트 쪽으로 데이터 연결을 시작한다. 서버가 클라이언트에 인바운드 연결을 하기 때문에 클라이언트 방화벽에 막히는 경우가 많다.
+**Active 모드 ** — 클라이언트가 PORT 명령으로 자신의 IP와 포트를 서버에 알려주고, 서버가 포트 20에서 클라이언트 쪽으로 데이터 연결을 시작한다. 서버가 클라이언트에 인바운드 연결을 하기 때문에 클라이언트 방화벽에 막히는 경우가 많다.
 
 **Passive 모드** — 클라이언트가 PASV 명령을 보내면 서버가 임의의 높은 포트를 열어 알려주고, 클라이언트가 그 포트로 연결한다. 클라이언트가 모든 연결을 시작하므로 방화벽 문제가 적다.
 
+하지만 클라이언트가 막히면 Passive, 서버가 막히면 Active를 써야 하기 때문에 문제에 따라서 적절히 사용하면 된다 
+
 `425 Cannot open data connection` 에러가 나오면 Passive 모드로 전환한다.
 
-```bash
-# Passive 모드로 전환
+
+문제별 판단:
+
+- `229 Entering Extended Passive Mode` 뒤에서 `ls`가 멈춤 → Passive 데이터 연결이 막힘 → Active로 전환
+- `425 Cannot open data connection` → 현재 모드의 데이터 연결 실패 → 반대 모드로 전환
+- `500 Illegal PORT command` → Active에서 클라이언트가 알려준 IP와 서버가 보는 IP가 다름 (NAT 뒤, 또는 WSL에서 작업하는데 VPN은 Windows에서 켠 경우) → VPN을 작업 환경 안에서 실행
+
+```
+# Passive 모드 토글 (켜져 있으면 꺼지고 꺼져 있으면 켜짐)
 ftp> passive
-# Passive mode on.
+# Passive mode: off; fallback to active mode: off.   ← 출력에서 현재 상태 확인
 
 # 접속 시부터 passive 모드
 ftp -p <IP>
 
-# lftp는 기본으로 passive 사용
-lftp <IP>
-```
+# 접속 시부터 active 모드 강제
+ftp -A <IP>
 
+# lftp는 기본으로 passive 사용, active로 바꾸려면
+lftp <IP>
+lftp> set ftp:passive-mode off
+```
 ---
 
 ## 6. wget으로 전체 다운로드
