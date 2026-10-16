@@ -131,4 +131,5 @@ krb2john tickets.pcapng > krb.hash                    # pcap에서 Kerberos 티�
 
 # --- 암호화 디스크 ---
 luks2john /dev/sdb > luks.hash                        # LUKS 암호화 디스크
+bitlocker2john -i image.vhd > bitlocker.hash          # BitLocker (VHD / 디스크 이미지)
 ```
