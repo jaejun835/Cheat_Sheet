@@ -1,3 +1,0 @@
-# 08_SMTP_25
-
-[SMTP](SMTP.md)

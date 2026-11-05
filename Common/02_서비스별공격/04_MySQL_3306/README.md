@@ -1,3 +1,0 @@
-# 04_MySQL_3306
-
-[MySQL](MySQL.md)
