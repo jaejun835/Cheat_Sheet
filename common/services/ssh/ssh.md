@@ -56,7 +56,7 @@ python2 45233.py <IP> --userList <users.txt> --outputFile <out.txt>
 ```bash
 # 발견한 개인키로 로그인
 chmod 600 id_rsa
-ssh -i id_rsa user@<IP>
+ssh -i id_rsa user@<IP> # 에이전트에 저장된 키가 아닌 직접 지정한 키만 인증에 사용하고 싶으면 이 옵션 붙여야 함-o IdentitiesOnly=yes 
 
 # 암호화된 키 크랙
 ssh2john id_rsa > id_rsa.hash
