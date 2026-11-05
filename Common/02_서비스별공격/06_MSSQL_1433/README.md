@@ -1,3 +1,0 @@
-# 06_MSSQL_1433
-
-[MSSQL](MSSQL.md)

@@ -1,0 +1,3 @@
+# IPMI
+
+[IPMI](ipmi.md)
