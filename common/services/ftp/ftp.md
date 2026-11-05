@@ -128,7 +128,7 @@ FTP 데이터 채널을 여는 방식이 두 가지다.
 - `425 Cannot open data connection` → 현재 모드의 데이터 연결 실패 → 반대 모드로 전환
 - `500 Illegal PORT command` → Active에서 클라이언트가 알려준 IP와 서버가 보는 IP가 다름 (NAT 뒤, 또는 WSL에서 작업하는데 VPN은 Windows에서 켠 경우) → VPN을 작업 환경 안에서 실행
 
-```
+```bash
 # Passive 모드 토글 (켜져 있으면 꺼지고 꺼져 있으면 켜짐)
 ftp> passive
 # Passive mode: off; fallback to active mode: off.   ← 출력에서 현재 상태 확인
