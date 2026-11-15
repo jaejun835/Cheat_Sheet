@@ -93,6 +93,7 @@ nxc mssql <IP> -u john -H <NTLM> -d CORP
 
 ## 3. 기본 명령어 (정찰)
 
+### shell 명령어
 ```sql
 -- 버전 확인
 SELECT @@version;
@@ -118,7 +119,34 @@ SELECT name FROM sys.server_principals WHERE type_desc = 'SQL_LOGIN';
 EXEC sp_linkedservers;
 SELECT name FROM sys.servers WHERE is_linked = 1;
 ```
+### GUI shell 명령어
+```sql
+-- 현재 테이블 전체 경로 확인
+SELECT TABLE_CATALOG + '.' + TABLE_SCHEMA + '.' + TABLE_NAME AS full_name
+FROM accounts.INFORMATION_SCHEMA.TABLES
+WHERE TABLE_NAME = '현재 테이블 이름';
 
+-- SQL Server 버전 확인
+SELECT @@VERSION AS version;
+
+-- 현재 로그인 계정 확인
+SELECT SYSTEM_USER AS login_name;
+
+-- 데이터베이스 목록 확인
+SELECT name FROM sys.databases;
+
+-- 특정 테이블의 처음 10개 행 확인
+SELECT TOP (10) * FROM <테이블 전체 경로>;
+
+-- 특정 계정의 비밀번호 조회
+SELECT password FROM <테이블 전체 경로> WHERE name = '계정이름';
+
+-- 특정 계정의 존재 유무 확인
+SELECT CASE
+    WHEN EXISTS (SELECT 1 FROM <테이블 전체 경로> WHERE name = '계정이름')
+    THEN N'있음'
+    ELSE N'없음'
+END AS 계정존재여부;```
 ---
 
 ## 4. SQL 내부 권한상승 — sysadmin 아니어도 sysadmin 되기
