@@ -67,7 +67,7 @@ nmap -sn --min-rate 2000 10.10.10.0/24 \
 
 # 3단계: 전체 UDP 포트 스캔
 
-sudo nmap -sU -p- -Pn <IP> -oA udp_ports.txt
+sudo nmap -sU -p- --min-rate 3000 -Pn <IP> -oA udp_ports.txt
 
 ###----------------------------------------------------------###
 
