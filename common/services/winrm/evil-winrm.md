@@ -11,7 +11,7 @@ WinRM은 Windows 원격 관리 서비스다. 기본 포트는 HTTP 5985, HTTPS 5
 ## 1. 열거 및 접속 가능 여부 확인
 
 ```bash
-# Kali/Parrot에서 NetExec 설치 (HTB 지문의 netexec과 nxc는 같은 도구)
+# Kali/Parrot에서 NetExec 설치
 sudo apt install netexec
 nxc -h
 nxc winrm -h
@@ -36,9 +36,9 @@ nxc winrm <IP> -u <USER> -p '<PASSWORD>' -X 'whoami'
 
 ---
 
-## 2. 사용자/비밀번호 목록 확인 (HTB 실습 흐름)
+## 2. 사용자/비밀번호 목록 확인
 
-사용자 목록과 비밀번호 목록을 받았다면 NetExec으로 WinRM 인증 결과를 확인한다. 여러 값이 들어간 두 파일을 함께 넣으면 조합을 시도하므로, 계정 잠금 정책과 시도 횟수를 먼저 확인한다.
+사용자 목록과 비밀번호 목록이 있다면 NetExec으로 WinRM 인증 결과를 확인한다. 여러 값이 들어간 두 파일을 함께 넣으면 조합을 시도하므로, 계정 잠금 정책과 시도 횟수를 먼저 확인한다.
 
 ```bash
 # 사용자·비밀번호 목록의 조합을 시도
@@ -57,7 +57,7 @@ nxc winrm <IP> -u users.txt -p '<PASSWORD>' --continue-on-success
 nxc winrm <IP> -u users.txt -p '<PASSWORD>' --jitter 2-5
 ```
 
-`--no-bruteforce`는 사용자/비밀번호 파일의 **같은 줄**이 짝일 때 사용한다. 두 파일의 모든 조합이 필요한 문제에 붙이면 일부 조합을 시도하지 못한다. 결과에서 `[+]`로 표시된 사용자·비밀번호를 확인한 뒤, `(Pwn3d!)` 또는 `-X 'whoami'`로 실제 명령 실행 가능 여부까지 본다.
+`--no-bruteforce`는 사용자/비밀번호 파일의 **같은 줄**이 짝일 때 사용한다. 두 파일의 모든 조합을 확인해야 한다면 이 옵션을 빼야 한다. 결과에서 `[+]`로 표시된 사용자·비밀번호를 확인한 뒤, `(Pwn3d!)` 또는 `-X 'whoami'`로 실제 명령 실행 가능 여부까지 본다.
 
 ---
 
@@ -85,7 +85,7 @@ evil-winrm -i <IP> -u <USER> -p '<PASSWORD>' -P <PORT>
 evil-winrm -i <IP> -u <USER> -p '<PASSWORD>' -S -P <PORT>
 ```
 
-접속에 성공하면 `*Evil-WinRM* PS ...>` 프롬프트가 뜬다. 이후 `whoami`, `hostname`, `Get-ChildItem` 등 PowerShell 명령을 실행할 수 있다. HTB처럼 로그인 후 플래그 파일을 찾는 문제에서는 먼저 현재 사용자와 위치를 확인하고 해당 계정이 읽을 수 있는 디렉터리를 탐색한다.
+접속에 성공하면 `*Evil-WinRM* PS ...>` 프롬프트가 뜬다. 이후 `whoami`, `hostname`, `Get-ChildItem` 등 PowerShell 명령을 실행할 수 있다. 접속 후에는 먼저 현재 사용자와 위치를 확인하고 해당 계정이 읽을 수 있는 디렉터리를 탐색한다.
 
 ```powershell
 whoami
@@ -93,7 +93,7 @@ hostname
 Get-Location
 Get-ChildItem -Force
 Get-ChildItem C:\Users\<USER> -Force
-Get-Content <FLAG_FILE>
+Get-Content <FILE_PATH>
 ```
 
 ---
@@ -168,5 +168,5 @@ upload /path/to/scripts/PowerView.ps1 C:\Temp\PowerView.ps1
 ## 팁
 
 - 비밀번호에 `!`, `$` 같은 셸 특수문자가 있으면 작은따옴표로 감싼다. 명령줄에 비밀번호를 남기고 싶지 않으면 Evil-WinRM에서 `-p`를 생략하고 프롬프트에 입력한다.
-- `nxc winrm -h`, `evil-winrm -h`로 설치된 버전의 옵션을 확인한다. HTB 지문의 도구 버전과 현재 설치 버전이 다를 수 있다.
+- `nxc winrm -h`, `evil-winrm -h`로 설치된 버전의 옵션을 확인한다. 설치된 버전에 따라 지원 옵션이 다를 수 있다.
 - WinRM 세션은 접속한 **계정의 권한**으로 실행된다. 접속에 성공했다고 자동으로 관리자 권한이 생기지는 않는다.
