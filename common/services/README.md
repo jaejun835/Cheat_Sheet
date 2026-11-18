@@ -20,6 +20,8 @@
 
 [RDP](rdp/README.md)
 
+[WinRM](winrm/README.md)
+
 [POP3 Imap](pop3-imap/README.md)
 
 [Oracle TNS](oracle-tns/README.md)
