@@ -130,7 +130,7 @@ hydra -L users.txt -P passwords.txt smb://<IP>
 # 트러블 슈팅 - invalid reply from target
 원인:
 - 비밀번호 실패가 아니라 Hydra의 smb 모듈이 서버 응답을 처리하지 못한 오류
-- nmap으로 정확한 지원 버전 확인했을 때 아래 와 같다면 버전 변경(smb를 smb2나 smb3로 변경)으로 해결 가능
+- smb-protocols 결과에 SMB1(NT LM 0.12)이 없고 SMB2/3만 있다면, Hydra의 smb:// 대신 smb2://<IP>를 사용한다.
 
 nmap -p445 --script smb-protocols <IP>
 
