@@ -121,38 +121,49 @@ sudo 옵션 켜기
 ____________________________________________________________________________/
 
 mount 폴더 접근 시도 에러 예시:
-┌──(root㉿jaejun835)-[~]
-└─# cd /tmp/nfs_mount                   
-cd: permission denied: /tmp/nfs_mount
+cd /tmp/nfs_mount
+# cd: permission denied: /tmp/nfs_mount
+
 
 원인:
-- 마운트는 됐지만 권한 때문에 디렉터리에 못 들어감
-- NFS에서는 root가 항상 만능이 아님
-- root_squash 때문에 클라이언트의 root가 서버에서 nobody 같은 낮은 권한으로 취급될 수 있음
+- 마운트는 됐지만 디렉터리 권한 때문에 들어가지 못할 수 있다.
+- NFS에서는 클라이언트의 root도 서버의 root와 같지 않을 수 있다. root_squash가 설정돼 있으면 익명 사용자로 취급된다.
+- permission denied만으로 root_squash가 원인이라고 확정할 수는 없다.
 
-해결방법:
-1. 마운트 폴더의 UID/GID 확인
+해결 방법:
+
+1. 디렉터리 권한과 숫자 UID/GID 확인
 ls -ldn /tmp/nfs_mount
+
 
 예시 결과:
 drwxr-x--- 2 2008 2008 4096 Sep 3 2012 /tmp/nfs_mount
 
 해석:
-- 소유자 UID = 2008
-- 그룹 GID = 2008
-- 권한이 750이라 UID/GID 2008 사용자만 접근 가능
+- 소유자 UID = 2008 → rwx: 목록 보기, 진입, 파일 생성·삭제 가능
+- 그룹 GID = 2008 → r-x: 목록 보기와 진입 가능, 파일 생성·삭제 불가
+- 그 외 사용자 → ---: 진입 불가
 
-2. 로컬 Kali에 같은 UID/GID 사용자 생성
-groupadd -g <GID 숫자> <그룹명> 2>/dev/null || true
-useradd -u <UID 숫자> -g <GID 숫자> -m <유저명> 2>/dev/null || true
+2. 일반적인 UID/GID가 확인됐을 때만 Kali에 해당 ID의 사용자 생성
+# 이미 사용 중인 UID/GID인지 먼저 확인
+getent group 2008
+getent passwd 2008
 
-3. 해당 사용자 권한으로 접근 확인
-sudo -u <유저명> ls -la /tmp/nfs_mount
+# 없는 경우에만 생성. 그룹명과 유저명은 임의의 이름 사용
+groupadd -g 2008 nfsgrp
+useradd -u 2008 -g 2008 -m nfsuser
 
-4. 쉘로 들어가서 직접 작업
-sudo -u <유저명> bash
+# 생성 결과 확인
+id nfsuser
+
+3. 생성한 사용자로 접근 확인
+sudo -u nfsuser ls -la /tmp/nfs_mount
+sudo -u nfsuser bash
 cd /tmp/nfs_mount
-ls -la
+
+ls -ldn 결과가 drwx------ 4294967294 4294967294 라면 위의 2008 계정 생성 절차를 그대로 적용하지 않는다.
+700 은 그룹 권한이 없으며, 4294967294는 NFS에서 익명 소유자로 나타날 수 있는 특수한 값이다.
+이 경우 마운트 버전, 서버의 UID 매핑·squash 설정, 실제로 거부되는 명령을 따로 확인한다.
 ____________________________________________________________________________/
 
 # 마운트 확인
