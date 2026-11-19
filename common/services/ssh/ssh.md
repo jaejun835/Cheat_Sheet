@@ -16,15 +16,21 @@ nmap -p 22 --script=ssh-auth-methods,ssh-hostkey,ssh2-enum-algos <IP>
 ssh <username>@<IP>
 ssh -p<PORT> <username>@<IP> # 포트 지정 
 
-# 버전 탐지 (취약점 확인용)
+# 대상 SSH 서비스 버전 확인
 nmap -sV -p 22 <IP>
+nc <IP> 22
+
+# 로컬 SSH 클라이언트 버전 확인
 ssh -V
-nc <IP> 22    # 배너 확인
+
+# 배너 확인
+nc <IP> 22    
 
 # 허용된 인증 방식 확인
 ssh -v user@<IP> 2>&1 | grep "Authentication methods"
 ```
-
+SSH는 Windows 서버에도 사용될 수 있다. 
+접속 후 C:\Users\...> 형태면 CMD, PS C:\Users\...> 형태면 PowerShell이므로 열린 셸에 맞는 명령어를 사용한다.
 ---
 
 ## 2. 브루트포스
