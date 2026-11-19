@@ -72,7 +72,7 @@ hydra -l admin -P /usr/share/wordlists/rockyou.txt <IP> http-get-form \
 # Basic 인증 팝업 (Tomcat 매니저 등)
 hydra -L users.txt -P passwords.txt -s 8080 <IP> http-get /manager/html
 
-# user:pass 조합 파일
+# user:pass 조합 파일 - 크리덴셜 스터핑
 hydra -C combo.txt <IP> http-post-form "..."
 ```
 
