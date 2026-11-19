@@ -1,5 +1,7 @@
 # Etc Passwd Write
 
+해시 확인은 shadow, 계정 정보 확인은 passwd
+
 # 리눅스 권한상승 — /etc/passwd 쓰기
 
 ---
