@@ -159,6 +159,13 @@ nxc smb 10.129.78.83 -u <Username> \
 
 # medusa
 medusa -h <IP> -u admin -P rockyou.txt -M smbnt
+
+# 패스워드 스프레잉
+nxc smb <IP> -u users.txt -p '<비밀번호>' --continue-on-success
+
+# 패스워드 스터핑
+hydra -C user_pass.list smb://<IP> # 위와 같이 smb2 옵션 사용 가능
+
 ```
 
 ---
