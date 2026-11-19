@@ -31,7 +31,7 @@ ssh -v user@<IP> 2>&1 | grep "Authentication methods"
 ```
 SSH는 Windows 서버에도 사용될 수 있다. 
 접속 후 C:\Users\...> 형태면 CMD, PS C:\Users\...> 형태면 PowerShell이므로 열린 셸에 맞는 명령어를 사용한다.
----
+
 
 ## 2. 브루트포스
 
