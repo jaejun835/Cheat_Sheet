@@ -37,6 +37,18 @@ mysql -h <IP> -P 3306 -u root -p
 # root / password
 # admin / admin
 
+# 기본 자격증명 후보 검색 (내 로컬 환경에서 실행)
+sudo apt update
+sudo apt install -y pipx
+pipx install defaultcreds-cheat-sheet
+~/.local/bin/creds search mysql
+
+# 검색 결과는 후보이므로 실제 로그인으로 확인
+# MySQL이 외부에 열려 있지 않다면, 접속 가능한 서버에 SSH로 들어간 뒤 실행
+ssh <유저명>@<IP>
+ss -lnt | grep ':3306'
+mysql -u <DB_유저명> -p
+
 # 연결 테스트
 mysql -h <IP> -u root --connect-timeout=5 -e "SELECT 1;" 2>/dev/null
 
