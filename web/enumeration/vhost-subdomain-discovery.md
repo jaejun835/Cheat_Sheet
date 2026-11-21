@@ -101,7 +101,7 @@ gobuster vhost -u http://<domain>:<port>/ -w /usr/share/seclists/Discovery/DNS/s
 grep -v "Status: 400" gb-vhost.txt
 ```
 
-### 사전 크기 상향
+### 사전 크기 상향 (20000까지도 안나오는 경우가 있어 110000 추천)
 
 작은 사전에 답 vhost 가 없으면 단계적으로 키운다.
 
