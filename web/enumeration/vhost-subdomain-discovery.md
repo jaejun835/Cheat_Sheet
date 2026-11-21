@@ -108,6 +108,7 @@ grep -v "Status: 400" gb-vhost.txt
 ```
 subdomains-top1million-5000.txt → -20000.txt → -110000.txt
 ```
+또한 1차에서 찾은 VHost를 다음 실행의 url에 넣고, 같은 gobuster vhost 명령을 돌리면 추가 vhost가 발견될 수 있다.
 
 ### ffuf vhost (Host 헤더 직접 퍼징)
 
