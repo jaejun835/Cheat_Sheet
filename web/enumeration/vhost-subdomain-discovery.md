@@ -70,7 +70,7 @@ cat <wordlist> | xargs -P50 -I{} sh -c \
 
 ---
 
-## vhost 퍼징 (Host 헤더)
+## vhost 퍼징 (Host 헤더 변경 방식으로 숨겨진 사이트 열거 가능)
 
 ### 준비 - 두 가지를 혼동 말 것
 
